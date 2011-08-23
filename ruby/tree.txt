@@ -1,0 +1,25 @@
+class  Tree
+  attr_accessor :children, :node_name
+
+  def initialize(name, children=[])
+    @children = children
+    @node_name = name
+  end
+
+  def initialize_with_hash(name, hash={})
+    @children = []
+    @node_name = name
+	hash.each_pair do |key, value| 
+	  @children << Tree.new(key, value)
+	end
+  end
+
+  def visit_all(&block)
+    visit &block
+    children.each {|c| visit_all & block}
+  end
+
+  def visit(&block)
+    block.call self
+  end
+end
